@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Electrodomesticos</title>
+    </h:head>
+    <h:body>
+        <p:panel id="pnlElectros">
+            <h:form id="frmElectros">
+                <p:panelGrid id="tblIngreso" columns="2">
+                    <p:outputLabel id="ingC" value="Codigo:"/>
+                    <p:inputText id="valC" value="#{electrodomesticoFormBean.codigo}"/>
+                    <p:outputLabel id="ingT" value="Tipo:"/>
+                    <p:inputText id="valT" value="#{electrodomesticoFormBean.tipo}"/>
+                    <p:outputLabel id="ingF" value="Fecha:"/>
+                    <p:calendar id="valF"  maxdate="today" showOn="button" value="#{electrodomesticoFormBean.fecha}"/>
+                    <p:outputLabel id="ingM" value="Marca:"/>
+                    <p:selectOneMenu id="menuM" value="#{electrodomesticoFormBean.marca}" converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="Seleccione Marca" itemValue="#{null}" />
+                        <f:selectItems value="#{electrodomesticoFormBean.listadoM.listaM}" 
+                                       var="cadaMarca" itemLabel="#{cadaMarca.nomMarca}" itemValue="#{cadaMarca}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel id="ingMo" value="Modelo:"/>
+                    <p:inputText id="valMo" value="#{electrodomesticoFormBean.modelo}"/>
+                    <p:outputLabel id="ingP" value="Precio:"/>
+                    <p:inputText id="valP" value="#{electrodomesticoFormBean.precio}"/>
+                    <p:outputLabel id="ingS" value="Stock:"/>
+                    <p:inputText id="valS" value="#{electrodomesticoFormBean.stock}"/>
+                    <p:outputLabel for="img" value="Imagen:"/>
+                    <p:fileUpload id="img" value="#{electrodomesticoFormBean.file}" 
+                                  mode="simple" invalidFileMessage="No se puede cargar ese archivo"/>
+                    <p:commandButton id="btnGuardarImagen" value="Guardar Imagen" 
+                                     ajax="false" actionListener="#{electrodomesticoFormBean.agregarImagen()}" disabled="true"/>
+                    <p:commandButton id="btnAgregar" 
+                                     value="Agregar Electrodomestico"
+                                     actionListener="#{electrodomesticoFormBean.agregarElectrodomestico()}" 
+                                     update=":muestraElectros"/>
+                    <p:outputLabel id="bBusqueda" value="Ingrese codigo de producto a buscar:"/>
+                    <p:inputText id="bBuscado" value="#{electrodomesticoFormBean.codencontrado}"/>
+                    <p:commandButton id="eEncontrado" value="Buscar Electrodomestico" ajax="false" actionListener="#{electrodomesticoFormBean.buscarElectrodomestico()}" update=":muestraElectros"/>
+                    <p:commandButton id="btnReiniciar" value="Reiniciar Lista" ajax="false" actionListener="#{electrodomesticoFormBean.reiniciarLista()}" update=":muestraElectros"/>
+                </p:panelGrid>
+            </h:form>
+            <h:form id="muestraElectros">
+                <p:dataTable id="tblMuestra" value="#{electrodomesticoFormBean.lista}" var="cadaElectrodomestico">
+                    <p:column headerText="Codigo">
+                        <p:outputLabel value="#{cadaElectrodomestico.codigo}"/>
+                    </p:column>
+                    <p:column headerText="Tipo">
+                        <p:outputLabel value="#{cadaElectrodomestico.tipo}"/>
+                    </p:column>
+                    <p:column headerText="Marca">
+                        <p:outputLabel value="#{cadaElectrodomestico.marca.nomMarca}"/>
+                    </p:column>
+                    <p:column headerText="Fecha">
+                        <p:outputLabel value="#{cadaElectrodomestico.fecha}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column headerText="Modelo">
+                        <p:outputLabel value="#{cadaElectrodomestico.modelo}"/>
+                    </p:column>
+                    <p:column headerText="Precio">
+                        <p:outputLabel value="#{cadaElectrodomestico.precio}"/>
+                    </p:column>
+                    <p:column headerText="Stock">
+                        <p:outputLabel value="#{cadaElectrodomestico.stock}"/>
+                    </p:column>
+                    <p:column headerText="Imagen">
+                        <p:graphicImage width="100" value="#{electrodomesticoFormBean.imagenSubida}" height="100" cache="false" />
+                    </p:column>
+                    <p:column headerText="Disponibilidad">
+                        <p:outputLabel value="#{cadaElectrodomestico.disponibilidad}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:panel>
+    </h:body>
+</html>
+
